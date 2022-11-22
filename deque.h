@@ -71,7 +71,7 @@ template <typename T> void Deque<T>::resize_blockmap()
     first_block = 1;
     T** temp = blockmap;
     blockmap = new T*[blockmap_size];
-    for (int i = 0; i < blockmap_size -1; i++)
+    for (int i = 0; i < blockmap_size - 1; i++)
     {
       blockmap[i + 1] = temp[i];
     }
@@ -83,7 +83,7 @@ template <typename T> void Deque<T>::resize_blockmap()
     blockmap_size++;
     T** temp = blockmap;
     blockmap = new T*[blockmap_size];
-    for (int i = 0; i < blockmap_size - 2; i++)
+    for (int i = 0; i < blockmap_size - 1; i++)
     {
       blockmap[i] = temp[i];
     }
@@ -188,7 +188,7 @@ template <typename T> T& Deque<T>::operator[](int idx)
 {
   int block = calc_block(idx);
   int index = calc_idx(idx);
-  return blockmap[calc_block(idx)][calc_idx(idx)];
+  return blockmap[block][index];
 }
 
 #endif //DEQUE_H
