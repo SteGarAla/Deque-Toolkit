@@ -11,11 +11,11 @@
 #define DEQUE_H
 
 // T should minimally have the = operator
-template <typename T> class Deque
+template <typename T>
+class Deque
 {
-  private:
-
-  T** blockmap;
+private:
+  T **blockmap;
   const static int BLOCK_SIZE = 8;
   int blockmap_size;
   int deque_size;
@@ -26,35 +26,36 @@ template <typename T> class Deque
   int calc_block(int idx);
   int calc_idx(int idx);
 
-  public:
+public:
   Deque();
   ~Deque();
 
-  void push_front(const T& obj);
-  void push_back(const T& obj);
+  void push_front(const T &obj);
+  void push_back(const T &obj);
   T pop_front();
   T pop_back();
   bool empty();
   int size();
-  T& operator[](int idx);
+  T &operator[](int idx);
 };
 
-template <typename T> Deque<T>::Deque()
+template <typename T>
+Deque<T>::Deque()
 {
   blockmap_size = 3;
   first_block = 1;
   first_idx = BLOCK_SIZE / 2;
   deque_size = 0;
 
-
-  blockmap = new T*[blockmap_size];
+  blockmap = new T *[blockmap_size];
   for (int i = 0; i < 3; i++)
   {
     blockmap[i] = new T[BLOCK_SIZE];
   }
 }
 
-template <typename T>  Deque<T>::~Deque()
+template <typename T>
+Deque<T>::~Deque()
 {
   for (int i = 0; i < blockmap_size; i++)
   {
@@ -63,14 +64,15 @@ template <typename T>  Deque<T>::~Deque()
   delete[] blockmap;
 }
 
-template <typename T> void Deque<T>::resize_blockmap()
+template <typename T>
+void Deque<T>::resize_blockmap()
 {
   if (first_block == 0)
   {
     blockmap_size++;
     first_block = 1;
-    T** temp = blockmap;
-    blockmap = new T*[blockmap_size];
+    T **temp = blockmap;
+    blockmap = new T *[blockmap_size];
     for (int i = 0; i < blockmap_size - 1; i++)
     {
       blockmap[i + 1] = temp[i];
@@ -81,8 +83,8 @@ template <typename T> void Deque<T>::resize_blockmap()
   if (calc_block(deque_size - 1) == blockmap_size - 1)
   {
     blockmap_size++;
-    T** temp = blockmap;
-    blockmap = new T*[blockmap_size];
+    T **temp = blockmap;
+    blockmap = new T *[blockmap_size];
     for (int i = 0; i < blockmap_size - 1; i++)
     {
       blockmap[i] = temp[i];
@@ -92,17 +94,20 @@ template <typename T> void Deque<T>::resize_blockmap()
   }
 }
 
-template <typename T> int Deque<T>::calc_block(int idx)
+template <typename T>
+int Deque<T>::calc_block(int idx)
 {
   return ((first_idx + idx) / BLOCK_SIZE) + first_block;
 }
 
-template <typename T> int Deque<T>::calc_idx(int idx)
+template <typename T>
+int Deque<T>::calc_idx(int idx)
 {
   return ((first_idx + idx) % BLOCK_SIZE);
 }
 
-template <typename T> void Deque<T>::push_front(const T& obj)
+template <typename T>
+void Deque<T>::push_front(const T &obj)
 {
   // Update first_idx and first_block, resize if necessary.
   if (first_idx != 0)
@@ -111,7 +116,7 @@ template <typename T> void Deque<T>::push_front(const T& obj)
   }
   else
   {
-    if(first_block == 0)
+    if (first_block == 0)
     {
       resize_blockmap();
     }
@@ -124,7 +129,8 @@ template <typename T> void Deque<T>::push_front(const T& obj)
   blockmap[first_block][first_idx] = obj;
 }
 
-template <typename T> void Deque<T>::push_back(const T& obj)
+template <typename T>
+void Deque<T>::push_back(const T &obj)
 {
   if (deque_size == 0)
   {
@@ -136,7 +142,7 @@ template <typename T> void Deque<T>::push_back(const T& obj)
   int last_idx = calc_idx(deque_size - 1);
 
   // resize if necessary
-  if(last_idx == BLOCK_SIZE - 1)
+  if (last_idx == BLOCK_SIZE - 1)
   {
     if (last_block == blockmap_size - 1)
     {
@@ -152,7 +158,8 @@ template <typename T> void Deque<T>::push_back(const T& obj)
   deque_size++;
 }
 
-template <typename T> T Deque<T>::pop_front()
+template <typename T>
+T Deque<T>::pop_front()
 {
   T copyOfFirst = blockmap[first_block][first_idx];
   deque_size--;
@@ -165,7 +172,8 @@ template <typename T> T Deque<T>::pop_front()
   return copyOfFirst;
 }
 
-template <typename T> T Deque<T>::pop_back()
+template <typename T>
+T Deque<T>::pop_back()
 {
   // Calculate the location of the last element
   int last_block = calc_block(deque_size - 1);
@@ -174,21 +182,24 @@ template <typename T> T Deque<T>::pop_back()
   return blockmap[last_block][last_idx];
 }
 
-template <typename T> bool Deque<T>::empty()
+template <typename T>
+bool Deque<T>::empty()
 {
   return deque_size == 0;
 }
 
-template <typename T> int Deque<T>::size()
+template <typename T>
+int Deque<T>::size()
 {
   return deque_size;
 }
 
-template <typename T> T& Deque<T>::operator[](int idx)
+template <typename T>
+T &Deque<T>::operator[](int idx)
 {
   int block = calc_block(idx);
   int index = calc_idx(idx);
   return blockmap[block][index];
 }
 
-#endif //DEQUE_H
+#endif // DEQUE_H
