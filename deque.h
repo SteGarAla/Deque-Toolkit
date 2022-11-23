@@ -10,7 +10,7 @@
 #ifndef DEQUE_H
 #define DEQUE_H
 
-// T should minimally have the = operator
+// T should have the = operator
 template <typename T>
 class Deque
 {
@@ -109,52 +109,22 @@ int Deque<T>::calc_idx(int idx)
 template <typename T>
 void Deque<T>::push_front(const T &obj)
 {
-  // Update first_idx and first_block, resize if necessary.
-  if (first_idx != 0)
+  resize_blockmap();
+  first_idx--;
+  if (first_idx < 0)
   {
-    first_idx--;
-  }
-  else
-  {
-    if (first_block == 0)
-    {
-      resize_blockmap();
-    }
-    first_block--;
     first_idx = BLOCK_SIZE - 1;
+    first_block--;
   }
+  (*this)[0] = obj;
   deque_size++;
-
-  // copy the data into our deque
-  blockmap[first_block][first_idx] = obj;
 }
 
 template <typename T>
 void Deque<T>::push_back(const T &obj)
 {
-  if (deque_size == 0)
-  {
-    push_front(obj);
-    return;
-  }
-  // Calculate the location of the last element
-  int last_block = calc_block(deque_size - 1);
-  int last_idx = calc_idx(deque_size - 1);
-
-  // resize if necessary
-  if (last_idx == BLOCK_SIZE - 1)
-  {
-    if (last_block == blockmap_size - 1)
-    {
-      resize_blockmap();
-    }
-    blockmap[last_block + 1][0] = obj;
-  }
-  else
-  {
-    blockmap[last_block][last_idx + 1] = obj;
-  }
-
+  resize_blockmap();
+  (*this)[deque_size] = obj;
   deque_size++;
 }
 
