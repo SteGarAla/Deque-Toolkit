@@ -10,17 +10,17 @@
 #ifndef DEQUE_H
 #define DEQUE_H
 
-// T should have the = operator
+// T should have the '=' (assignment) operator. Else we need to rework this a bit.
 template <typename T>
 class Deque
 {
 private:
-  T **blockmap;
-  const static int BLOCK_SIZE = 8;
-  int blockmap_size;
-  int deque_size;
-  int first_block;
-  int first_idx;
+  T **blockmap; // 2d Array mapping to the data in the deque.
+  const static int BLOCK_SIZE = 8; // Size of each block in the array. Currently very small for ease of testing.
+  int blockmap_size; // The maximum # of blocks the blockmap can currently accommodate.
+  int deque_size; // The number of indices currently populated in the deque.
+  int first_block; // Index of the block containing the first index of the deque.
+  int first_idx; // Index within first_block that contains the first index of the deque.
 
   void resize_blockmap();
   int calc_block(int idx);
@@ -67,7 +67,8 @@ Deque<T>::~Deque()
 template <typename T>
 void Deque<T>::resize_blockmap()
 {
-  if (first_block == 0)
+  // Adds a new block in front of the array if it cannot expand anymore in that direction.
+  if (first_block == 0 && first_idx == 0)
   {
     blockmap_size++;
     first_block = 1;
@@ -80,7 +81,9 @@ void Deque<T>::resize_blockmap()
     blockmap[0] = new T[BLOCK_SIZE];
     delete[] temp;
   }
-  if (calc_block(deque_size - 1) == blockmap_size - 1)
+
+  // Adds a new block behind the array if it cannot expand anymore in that direction.
+  if ((calc_block(deque_size - 1) == blockmap_size - 1) && (calc_idx(deque_size - 1) == BLOCK_SIZE - 1))
   {
     blockmap_size++;
     T **temp = blockmap;
@@ -131,7 +134,7 @@ void Deque<T>::push_back(const T &obj)
 template <typename T>
 T Deque<T>::pop_front()
 {
-  T copyOfFirst = blockmap[first_block][first_idx];
+  T &copyOfFirst = (*this)[0];
   deque_size--;
   first_idx++;
   if (first_idx == BLOCK_SIZE)
@@ -145,11 +148,8 @@ T Deque<T>::pop_front()
 template <typename T>
 T Deque<T>::pop_back()
 {
-  // Calculate the location of the last element
-  int last_block = calc_block(deque_size - 1);
-  int last_idx = calc_idx(deque_size - 1);
   deque_size--;
-  return blockmap[last_block][last_idx];
+  return (*this)[deque_size];
 }
 
 template <typename T>
