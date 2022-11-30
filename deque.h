@@ -275,6 +275,9 @@ template <typename T>
 T Deque<T>::pop_front()
 {
   T &copyOfFirst = (*this)[0];
+  if (deque_size == 0)
+    return copyOfFirst;
+  
   deque_size--;
   first_idx++;
   if (first_idx == BLOCK_SIZE)
@@ -288,6 +291,9 @@ T Deque<T>::pop_front()
 template <typename T>
 T Deque<T>::pop_back()
 {
+  if (deque_size == 0)
+    return (*this)[0];
+
   deque_size--;
   return (*this)[deque_size];
 }

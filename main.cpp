@@ -61,13 +61,6 @@ void print_deque(Deque<T> &d)
 
 template <typename T>
 void testing(Deque<T> &d){
-	cout << "Testing pop_front() & pop_back() \n";
-	
-	for(int i = 0; i < d.size(); i++){
-	  cout << "Removing: " << d.pop_front() << "\n";
-	  cout << "Removing: " << d.pop_back() << "\n";
-	}
-
 	cout << "Testing front() & back() \n";
 	cout << "Front: " << d.front() << "\n";
 	cout << "Back: " << d.back() << "\n";
@@ -82,4 +75,11 @@ void testing(Deque<T> &d){
 	cout << "The size of the deque is " << d.size() << "\n";
 
 	print_deque(d);
+
+  cout << "Testing pop_front() & pop_back() \n";
+  while(!d.empty())
+  {
+    cout << "Removing: " << d.pop_back() << endl;
+    cout << "Removing: " << d.pop_front() << endl;
+  }
 }
