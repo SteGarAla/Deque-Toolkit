@@ -13,8 +13,27 @@
 using namespace std;
 
 
+
+/**
+ * Function that will allow for testing of either a int,char or double deque
+ *
+ * @return void 
+ * @post successful testing for either int,char or double deque
+ * 
+ */
 void menu();
+
+/**
+ * displays the options for testing the deque
+ *
+ * @param  
+ * @pre 
+ * @return void 
+ * @post 
+ * 
+ */
 void displayDequeOptions();
+
 void testingChar(Deque<char> &d);
 void testingInt(Deque<int> &d);
 void testingDouble(Deque<double> &d);

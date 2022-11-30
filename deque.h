@@ -10,8 +10,16 @@
 #ifndef DEQUE_H
 #define DEQUE_H
 
-// T should have the '=' (assignment) operator. Else we need to rework this a bit.
+
 template <typename T>
+
+/**
+ * deque implementation
+ *
+ * @class Deque deque.h "Deque-Toolkit/deque.h"
+ * @brief 
+ *
+ */
 class Deque
 {
 private:
@@ -22,25 +30,152 @@ private:
   int first_block; // Index of the block containing the first index of the deque.
   int first_idx; // Index within first_block that contains the first index of the deque.
 
+
+/**
+ * resizing the deque (blockmap)
+ * 
+ * @pre blockmap needs to increase capacity
+ * @return void 
+ * @post The deque has been resized 
+ * 
+ */
   void resize_blockmap();
+
+/**
+ * calculates correct block given an index 
+ *
+ * @param int idx Index whose block is being calculated
+ * @pre 
+ * @return int Returns the correct block for the index
+ * @post 
+ * 
+ */
   int calc_block(int idx);
+
+/**
+ * calculates correct index for the deque
+ *
+ * @param int idx index whose index is being found for the deque
+ * @pre 
+ * @return int returns the correct index for the deque
+ * @post 
+ * 
+ */
   int calc_idx(int idx);
 
 public:
+
+/**
+ * Constructor
+ *
+ * @pre Deque object is created
+ * @post Deque has been initialized
+ * 
+ */
   Deque();
+
+/**
+ * Deque Destructor
+ *
+ * @pre Deque object is created
+ * @post deque is destroyed
+ * 
+ */
   ~Deque();
 
-  void push_front(const T &obj);
-  void push_back(const T &obj);
-  T pop_front();
-  T pop_back();
-  bool empty();
-  int size();
-  T &operator[](int idx);
 
-  //added
+/**
+ * Adds element to the front of the deque
+ *
+ * @param const T &obj The element being added to the front
+ * @pre Deque must be created
+ * @return void 
+ * @post element being passed through is added to the front
+ * 
+ */
+  void push_front(const T &obj);
+
+/**
+ * Adds element to the end of the deque
+ *
+ * @param const T &obj The element being added to the back
+ * @pre 
+ * @return void 
+ * @post element being passed through is added to the back
+ * 
+ */
+  void push_back(const T &obj);
+
+/**
+ * Returns the element being removed from the front of the deque
+ *
+ * @pre Deque must be created
+ * @return T element that was removed from the front of the deque
+ * @post element is returned after being removed
+ * 
+ */
+  T pop_front();
+
+/**
+ * Returns the element being removed from the end of the deque
+ *
+ * @pre Deque must be created
+ * @return T element that was removed from the back of the deque
+ * @post element is returned after being removed
+ * 
+ */
+  T pop_back();
+
+/**
+ * returns a copy of the element at the front of the deque
+ *
+ * @pre Deque has been created 
+ * @return T copy of the element at the front of the deque
+ * @post T copy of the element at the front of the deque
+ * 
+ */
   T front(); 
+
+/**
+ * returns a copy of the element at the front of the deque
+ *
+ * @pre Deque has been created
+ * @return T copy of the element at the end of the deque
+ * @post 
+ * 
+ */
   T back();
+  
+/**
+ * Checks if the deque is empty 
+ *
+ * @pre Deque must be created
+ * @return bool will return true if empty, false otherwise
+ * @post 
+ * 
+ */
+  bool empty();
+
+/**
+ * method that will return the size of the deque
+ *
+ * @pre Deque must be created
+ * @return int total amount of elements that have been added in the deque
+ * @post size of the deque is returned 
+ * 
+ */
+  int size();
+
+/**
+ * [] overload to get element at certain index
+ *
+ * @param int idx index whose deque index is being searched for
+ * @pre Deque must be created
+ * @return T 
+ * @post correct index is returned for the deque
+ * 
+ */
+  T &operator[](int idx);
 };
 
 template <typename T>
