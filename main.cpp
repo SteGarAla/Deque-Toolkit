@@ -7,8 +7,9 @@
  * Driver that organizes the operation of the program, and conducts tests
  */
 
-#include "deque.h"
+
 #include <iostream>
+#include "deque.h"
 using namespace std;
 
 
@@ -30,7 +31,8 @@ void print_deque(Deque<T> &d)
 
 int main() {
   
-  menu();
+    menu();
+
 
   return 0;
 }
@@ -41,52 +43,52 @@ void menu (){
   Deque<int> intTest;
   Deque<double> dTest;
   
-    while(true) {
-      int choice;
-      
-      cout << "Enter a choice from the menu \n"
-	"1. Deque<int> testing \n"
-	"2. Deque<char> testing \n"
-	"3. Deque<double> testing \n"
-	"4. EXIT \n";
-      
-        cout << "Enter choice: \n";
-        cin >> choice;
-	
-        switch (choice) {
-            case 1:
-	      {
-                cout << "Entering Deque<int> test \n";
-                testingInt(intTest);
-                break;
-	      }
-	case 2:
-	  {
-	    cout << "Entering Deque<char> test \n";
-                testingChar(charTest);
-                break;
-	  }
-	case 3:
-	  {
-	    cout << "Entering Deque<double> test\n";
-	    testingDouble(dTest);
-	    break;
-	  }
-	case 4:
-	  {
-	    cout << "Exiting program! \n";
-	    return;
-	  }
-	default:
-	  {
-	    cout << "Try Again,this time with a valid option! \n";
-	  }
-        }
-        cout << "Press any key to continue! \n ";
-        cin.clear();
-        cin.ignore(100,'\n');
-        getchar();
+  while(true) {
+    int choice;
+    
+    cout << "Enter a choice from the menu \n"
+      "1. Deque<int> testing \n"
+      "2. Deque<char> testing \n"
+      "3. Deque<double> testing \n"
+      "4. EXIT \n";
+    
+    cout << "Enter choice: \n";
+    cin >> choice;
+    
+    switch (choice) {
+    case 1:
+      {
+	cout << "Entering Deque<int> test \n";
+	testingInt(intTest);
+	break;
+      }
+    case 2:
+      {
+	cout << "Entering Deque<char> test \n";
+	testingChar(charTest);
+	break;
+      }
+    case 3:
+      {
+	cout << "Entering Deque<double> test\n";
+	testingDouble(dTest);
+	break;
+      }
+    case 4:
+      {
+	cout << "Exiting program! \n";
+	return;
+      }
+    default:
+      {
+	cout << "Try Again,this time with a valid option! \n";
+      }
     }
+    cout << "Press any key to continue! \n ";
+    cin.clear();
+    cin.ignore(100,'\n');
+    getchar();
+  }
 }
 void displayDequeOptions()
 {
@@ -112,14 +114,11 @@ void testingChar(Deque<char> &d){
       {
 	cout << "Testing push_front() & push_back() \n";
 	
-	char startingPoint = '!';
+	char startingPoint1 = '!';
+	char startingPoint2 = '~';
 	for(int i = 0; i < 93; i++){
-	  d.push_front(startingPoint++);
-	}
-	
-	startingPoint = '~';
-	for(int i = 0; i < 93; i++){
-	  d.push_front(startingPoint--);
+	  d.push_front(startingPoint1++);
+	  d.push_back(startingPoint2--);
 	}
 	
 	break;
@@ -129,11 +128,8 @@ void testingChar(Deque<char> &d){
 	cout << "Testing pop_front() & pop_back() \n";
 	
 	for(int i = 0; i < 93; i++){
-	  cout << "Removing: " << d.pop_back() << "\n";
-	}
-	
-	for(int i = 0; i < 93; i++){
 	  cout << "Removing: " << d.pop_front() << "\n";
+	  cout << "Removing: " << d.pop_back() << "\n";
 	}
 	
 	break;
@@ -141,13 +137,17 @@ void testingChar(Deque<char> &d){
     case 3:
       {
 	cout << "Testing front() & back() \n";
-	//front() is working, back() being worked on
+	cout << "Front: " << d.front() << "\n";
+	cout << "Back: " << d.back() << "\n";
 	break;
       }
     case 4:
       {
 	cout << "Testing empty() \n";
-	cout << "deque is empty = "<< boolalpha << d.empty() << "\n";
+	if(d.empty()){
+	  cout << "deque is empty! \n"; 
+	}
+	cout << "deque is not empty! \n";
 	break;
       }
     case 5:
@@ -206,13 +206,11 @@ void testingInt(Deque<int> &d){
       {
 	cout << "Testing push_front() & push_back() \n";
 	
-	for(int i = 0; i < 100; i++){
-	  d.push_front(i * -1);
-	}
-	
-	for(int i = 0; i < 100; i++){
-	  d.push_front(i);
-	}
+	for(int i = 0; i < 500; i++)
+	  {
+	    d.push_front(i * -1);
+	    d.push_back(i);    
+	  }
 	
 	break;
       }
@@ -220,12 +218,9 @@ void testingInt(Deque<int> &d){
       {
 	cout << "Testing pop_front() & pop_back() \n";
 	
-	for(int i = 0; i < 100; i++){
-	  cout << "Removing: " << d.pop_back() << "\n";
-	}
-	
-	for(int i = 0; i < 100; i++){
+	for(int i = 0; i < 500; i++){
 	  cout << "Removing: " << d.pop_front() << "\n";
+	  cout << "Removing: " << d.pop_back() << "\n";
 	}
 	
 	break;
@@ -233,13 +228,17 @@ void testingInt(Deque<int> &d){
     case 3:
       {
 	cout << "Testing front() & back() \n";
-	//front() is working, back() being worked on
+	cout << "Front: " << d.front() << "\n";
+	cout << "Back: " << d.back() << "\n";
 	break;
       }
     case 4:
       {
 	cout << "Testing empty() \n";
-	cout << "deque is empty = "<< boolalpha << d.empty() << "\n";
+	if(d.empty()){
+	  cout << "deque is empty! \n"; 
+	}
+	cout << "deque is not empty! \n";
 	break;
       }
     case 5:
@@ -296,12 +295,9 @@ void testingDouble(Deque<double> &d){
       {
 	cout << "Testing push_front() & push_back() \n";
 	
-	for(int i = 0; i < 100; i++){
+	for(int i = 0; i < 500; i++){
 	  d.push_front(i * -1.111);
-	}
-	
-	for(int i = 0; i < 100; i++){
-	  d.push_front(i * 1.111);
+	  d.push_back(i);
 	}
 	
 	break;
@@ -310,12 +306,9 @@ void testingDouble(Deque<double> &d){
       {
 	cout << "Testing pop_front() & pop_back() \n";
 	
-	for(int i = 0; i < 100; i++){
-	  cout << "Removing: " << d.pop_back() << "\n";
-	}
-	
-	for(int i = 0; i < 100; i++){
+	for(int i = 0; i < 500; i++){
 	  cout << "Removing: " << d.pop_front() << "\n";
+	  cout << "Removing: " << d.pop_back() << "\n";
 	}
 	
 	break;
@@ -323,13 +316,19 @@ void testingDouble(Deque<double> &d){
     case 3:
       {
 	cout << "Testing front() & back() \n";
-	//front() is working, back() being worked on
+	cout << "Front: " << d.front() << "\n";
+	cout << "Back: " << d.back() << "\n";
 	break;
       }
     case 4:
       {
 	cout << "Testing empty() \n";
-	cout << "deque is empty = "<< boolalpha << d.empty() << "\n";
+
+	if(d.empty()){
+	  cout << "deque is empty! \n"; 
+	}
+	cout << "deque is not empty! \n";
+	
 	break;
       }
     case 5:

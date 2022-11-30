@@ -34,14 +34,13 @@ public:
   void push_back(const T &obj);
   T pop_front();
   T pop_back();
-  //added recently
-  T front(); 
-  T back();
-  // I still need to finish back()
-  
   bool empty();
   int size();
   T &operator[](int idx);
+
+  //added
+  T front(); 
+  T back();
 };
 
 template <typename T>
@@ -132,6 +131,7 @@ template <typename T>
 void Deque<T>::push_back(const T &obj)
 {
   resize_blockmap();
+  
   (*this)[deque_size] = obj;
   deque_size++;
 }
@@ -158,15 +158,15 @@ T Deque<T>::pop_back()
 }
 
 template <typename T>
-T Deque<T>::front(){
-  
+T Deque<T>::front()
+{ 
   return blockmap[first_block][first_idx];
 }
 
 template <typename T>
-T Deque<T>::back(){
-
-  // working on it
+T Deque<T>::back()
+{  
+  return (*this)[deque_size - 1];
 }
 
 template <typename T>

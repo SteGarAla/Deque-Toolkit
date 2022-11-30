@@ -3,8 +3,8 @@ CFLAGS = -g -Wall -Wextra
 
 default: deque
 
-deque: deque.h main.o
-	$(CC) $(CFLAGS) -o deque deque.h main.o
+deque:  main.o
+	$(CC) $(CFLAGS) -o deque main.o
 
 main.o: main.cpp deque.h
 	$(CC) $(CFLAGS) -c main.cpp
