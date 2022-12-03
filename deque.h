@@ -25,7 +25,7 @@ private:
   T **blockmap;                    // 2d Array mapping to the data in the deque.
   const static int BLOCK_SIZE = 8; // Size of each block in the array. Currently very small for ease of testing.
   int blockmap_size;               // The maximum # of blocks the blockmap can currently accommodate.
-  int deque_size;                  // The number of indices currently populated in the deque.
+  long unsigned int deque_size;    // The number of indices currently populated in the deque.
   int first_block;                 // Index of the block containing the first index of the deque.
   int first_idx;                   // Index within first_block that contains the first index of the deque.
 
@@ -160,7 +160,7 @@ public:
    * @post size of the deque is returned
    *
    */
-  int size();
+  unsigned int size();
 
   /**
    * [] overload to get element at certain index
@@ -313,7 +313,7 @@ bool Deque<T>::empty()
 }
 
 template <typename T>
-int Deque<T>::size()
+unsigned int Deque<T>::size()
 {
   return deque_size;
 }

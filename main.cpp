@@ -8,6 +8,7 @@
  */
 
 #include <iostream>
+#include <deque>
 #include "deque.h"
 using namespace std;
 
@@ -15,13 +16,14 @@ using namespace std;
  * runs tests on the supplied deque
  *
  * @param Deque<T> &d the supplied deque
- * @pre the deque should contain test data
- * @return void
+ * @param deque<T> &ref std::deque reference
+ * @pre the deques should contain test data
+ * @return int the number of errors encountered.
  * @post
  *
  */
 template <typename T>
-void testing(Deque<T> &d);
+int testing(Deque<T> &d, deque<T> &r);
 
 /**
  * prints the supplied deque to std out.
@@ -37,32 +39,49 @@ void print_deque(Deque<T> &d);
 
 int main()
 {
+	int errorCount = 0;
 
 	Deque<char> charTest;
+	deque<char> charReference;
+
 	char startingPoint1 = '!';
 	char startingPoint2 = '~';
 	for (int i = 0; i < 93; i++)
 	{
-		charTest.push_front(startingPoint1++);
-		charTest.push_back(startingPoint2--);
+		charTest.push_front(startingPoint1);
+		charTest.push_back(startingPoint2);
+		charReference.push_front(startingPoint1);
+		charReference.push_back(startingPoint2);
+		startingPoint1++;
+		startingPoint2--;
 	}
-	testing(charTest);
+	errorCount += testing(charTest, charReference);
 
 	Deque<int> intTest;
+	deque<int> intReference;
+
 	for (int i = 0; i < 500; i++)
 	{
 		intTest.push_front(i * -1);
 		intTest.push_back(i);
+		intReference.push_front(i * -1);
+		intReference.push_back(i);
 	}
-	testing(intTest);
+	errorCount += testing(intTest, intReference);
 
 	Deque<double> dTest;
+	deque<double> dReference;
+
 	for (int i = 0; i < 500; i++)
 	{
 		dTest.push_front(i * -1.111);
 		dTest.push_back(i);
+		dReference.push_front(i * -1.111);
+		dReference.push_back(i);
 	}
-	testing(dTest);
+	errorCount += testing(dTest, dReference);
+
+	cout << "\nAll tests completed with " << errorCount << " total error(s).\n";
 
 	return 0;
 }
@@ -70,35 +89,144 @@ int main()
 template <typename T>
 void print_deque(Deque<T> &d)
 {
-	for (int i = 0; i < d.size(); i++)
+	for (unsigned int i = 0; i < d.size(); i++)
 	{
-		std::cout << d[i] << std::endl;
+		std::cout << i << ": " << d[i] << ' ';
 	}
+	cout << endl;
 }
 
 template <typename T>
-void testing(Deque<T> &d)
+int testing(Deque<T> &d, deque<T> &r)
 {
-	cout << "Testing front() & back() \n";
-	cout << "Front: " << d.front() << "\n";
-	cout << "Back: " << d.back() << "\n";
+	int errorCount = 0;
+	cout << "Performing tests on unmodified deques.\n";
 
-	cout << "Testing empty() \n";
-	if (d.empty())
+	cout << "Testing front() & back()\n";
+	if (d.front() != r.front())
 	{
-		cout << "deque is empty! \n";
+		cout << "front() fail...\n"
+				 << d.front() << " " << r.front() << endl;
+		errorCount++;
 	}
-	cout << "deque is not empty! \n";
+	if (d.back() != r.back())
+	{
+		cout << "back() fail\n"
+				 << d.back() << " " << r.back() << endl;
+		;
+		errorCount++;
+	}
+	cout << "Done...\n";
 
-	cout << "Testing size() \n";
-	cout << "The size of the deque is " << d.size() << "\n";
+	cout << "Testing empty()\n";
+	if (d.empty() != r.empty())
+	{
+		cout << "empty() fail\n";
+		errorCount++;
+	}
+	cout << "Done...\n";
 
-	print_deque(d);
+	cout << "Testing size()\n";
+	if (d.size() != r.size())
+	{
+		cout << "size() fail\n";
+		errorCount++;
+	}
+	cout << "Done...\n";
 
-	cout << "Testing pop_front() & pop_back() \n";
+	cout << "Modifying deques\n";
+
+	for (long unsigned int i = 0; i < d.size() / 2; i++)
+	{
+		d.push_back(d.front());
+		d.pop_front();
+		d.pop_front();
+		d.push_front(d.back());
+		d.push_front(d.back());
+
+		r.push_back(r.front());
+		r.pop_front();
+		r.pop_front();
+		r.push_front(r.back());
+		r.push_front(r.back());
+	}
+	cout << "Done...\n";
+
+	cout << "Performing tests on modified deques.\n";
+
+	cout << "Testing front() & back()\n";
+	if (d.front() != r.front())
+	{
+		cout << "front() fail...\n"
+				 << d.front() << " " << r.front() << endl;
+		errorCount++;
+	}
+	if (d.back() != r.back())
+	{
+		cout << "back() fail\n"
+				 << d.back() << " " << r.back() << endl;
+		errorCount++;
+	}
+	cout << "Done...\n";
+
+	cout << "Testing empty()\n";
+	if (d.empty() != r.empty())
+	{
+		cout << "empty() fail\n";
+		errorCount++;
+	}
+	cout << "Done...\n";
+
+	cout << "Testing size()\n";
+	if (d.size() != r.size())
+	{
+		cout << "size() fail\n";
+		errorCount++;
+	}
+	cout << "Done...\n";
+
+	cout << "Emptying deques.\n";
+
 	while (!d.empty())
 	{
-		cout << "Removing: " << d.pop_back() << endl;
-		cout << "Removing: " << d.pop_front() << endl;
+		d.pop_front();
+		r.pop_front();
 	}
+	cout << "Done...\n";
+
+	cout << "Performing tests on empty deques.\n";
+
+	cout << "Testing front() & back()\n";
+	if (d.front() != r.front())
+	{
+		cout << "front() fail...\n"
+				 << d.front() << " " << r.front() << endl;
+		errorCount++;
+	}
+	if (d.back() != r.back())
+	{
+		cout << "back() fail\n"
+				 << d.back() << " " << r.back() << endl;
+		errorCount++;
+	}
+	cout << "Done...\n";
+
+	cout << "Testing empty()\n";
+	if (d.empty() != r.empty())
+	{
+		cout << "empty() fail\n";
+		errorCount++;
+	}
+	cout << "Done...\n";
+
+	cout << "Testing size()\n";
+	if (d.size() != r.size())
+	{
+		cout << "size() fail\n";
+		errorCount++;
+	}
+	cout << "Done...\n";
+
+	cout << "Testing completed with " << errorCount << " error(s).\n\n";
+	return errorCount;
 }
